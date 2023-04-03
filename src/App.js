@@ -1,23 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { getChains } from "./store/getData/actions";
 
 function App() {
+  const user = useSelector((state) => state.chain);
+  const dispatch = useDispatch();
+
+  const fromTokens = useSelector((state) => state.fromTokens);
+  console.log("🚀 ~ App ~ fromTokens:", fromTokens);
+
+  const [istestnet, setIstestnet] = useState(false);
+
+  useEffect(() => {
+    dispatch(getChains(istestnet));
+  }, [istestnet]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {user?.isLoading ? (
+        <p>Loading...</p>
+      ) : user?.isSuccess ? (
+        user.data.map((chain) => <p key={chain.id}>{chain.name}</p>)
+      ) : (
+        <p>Error: {user?.errorMessage}</p>
+      )}
     </div>
   );
 }
