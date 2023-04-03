@@ -1,5 +1,4 @@
 import { configureStore } from "@reduxjs/toolkit";
-// import chainsReducer from "./getData/chainsSlice";
 import chainsReducer from "./getData/slices/chainsSlice";
 import fromTokens from "./getData/slices/fromTokenSlice";
 
